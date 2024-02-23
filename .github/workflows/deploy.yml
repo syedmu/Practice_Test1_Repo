@@ -10,11 +10,14 @@ jobs:
               uses: actions/setup-node@v4
               with:
                 node-version: 18
+            - name: Dependency Install
+              run : npm ci
             - name: Lint Code
               run: npm run lint
             - name: Run Tests
               run: npm test
     Build:
+        needs: [Lint_Test_Code]
         runs-on: ubuntu-latest
         steps:
             - name: Code Checkout
@@ -23,6 +26,8 @@ jobs:
               uses: actions/setup-node@v4
               with:
                 node-version: 18
+            - name: Dependency Install
+              run : npm ci
             - name: Lint Code
               run: npm run lint
             - name: Build Code
