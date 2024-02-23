@@ -1,0 +1,11 @@
+name: Output
+on:
+    issues: 
+        types: [opened, edited]
+jobs:
+    output:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Output issue context
+              run: echo " ${{ github }} " 
+              
