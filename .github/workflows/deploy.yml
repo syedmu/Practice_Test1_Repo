@@ -36,6 +36,9 @@ jobs:
               run: npm run lint
             - name: Build Code
               run: npm run build  
+            - uses: actions/upload-artifact@v4
+              with:
+                name: dist/**/*
             - name: Deploy
               run: echo "Deploying Code...."   
 
