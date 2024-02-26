@@ -42,4 +42,13 @@ jobs:
                 path: dist/**/*
             - name: Deploy
               run: echo "Deploying Code...."   
+    Deploy:
+        needs: [Build]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/download-artifact@v4
+              with: 
+                name: Artifact
+            - name: List
+              run: ls
 
