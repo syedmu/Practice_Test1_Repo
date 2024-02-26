@@ -1,7 +1,11 @@
 name: Lint, Test and Build
-on: [push]
+on: 
+    pull_request: 
+        branches: [main,dev]
 jobs:
     Lint_Test_Code:
+        env:
+            var_name: ${{ secrets.REPO_SECRET_NAME }}
         runs-on: ubuntu-latest
         steps:
             - name: Code Checkout
@@ -16,6 +20,8 @@ jobs:
               run: npm run lint
             - name: Run Tests
               run: npm test
+            - name: Print env var
+              run: echo "${{env.var_name}}"
     Build:
         needs: [Lint_Test_Code]
         runs-on: ubuntu-latest
@@ -32,6 +38,24 @@ jobs:
               run: npm run lint
             - name: Build Code
               run: npm run build  
+            - uses: actions/upload-artifact@v4
+              with:
+                name: Artifact
+                path: dist/**/*
             - name: Deploy
               run: echo "Deploying Code...."   
+    Deploy:
+        needs: [Build]
+        runs-on: ubuntu-latest
+        environment: tetsing
+        env:
+            var_name: ${{ secrets.REPO_SECRET_NAME }}
+        steps:
+            - uses: actions/download-artifact@v4
+              with: 
+                name: Artifact
+            - name: List
+              run: ls
+            - name: output var name
+              run: "${{env.var_name}}"
 
